@@ -10,16 +10,16 @@
 |---|---|---|
 | `0.1.11` 及更早的维护版本 | `dsh-v0.1.1-rc.2` | 旧基线；不与新插件混装 |
 | `0.1.15` | `dsh-v0.1.7-rc.2` + Browser `0.1.15` | 精确锁定该宿主版本；组合安装、真实 Web profile 与设置持久化已验证 |
-| `0.1.16` | `dsh-v0.1.7-rc.2` ~ `dsh-v0.2.0-rc.2` + Browser `0.1.15` | peer 改为范围声明；在 `0.2.0-rc.2` 上完成 typecheck、构建、测试与 headless 真实调用验证 |
+| `0.1.17` | `dsh-v0.1.7-rc.2` ~ `dsh-v0.2.0-rc.2` + Browser `0.1.17` | peer 改为范围声明；在 `0.2.0-rc.2` 上完成 typecheck、构建、85 项测试与 headless 真实调用验证 |
 
-`0.1.16` 把 DSH 运行时依赖从精确锁定改为范围声明（`>=0.1.7-rc.2 <0.3.0`），
+`0.1.17` 把 DSH 运行时依赖从精确锁定改为范围声明（`>=0.1.7-rc.2 <0.3.0`），
 因此同一份包可装在 `0.1.7-rc.2` 与 `0.2.0-rc.2` 两代宿主上（两代之间的 `defineTool`、凭据引用、
 配置表单与客户端槽位接口在本插件用到的范围内保持兼容）；客户端配置仍走 `configForms` 和插件 bundle 的专属配置槽位。
 
 ## 安装
 
 ```bash
-dsh plugin --profile web add @anweat/dsh-browser@0.1.15 dsh-web-search-pro@0.1.15
+dsh plugin --profile web add @anweat/dsh-browser@0.1.17 dsh-web-search-pro@0.1.17
 # 或本地目录 / tarball：
 dsh plugin --profile web add ../dsh-browser ./dsh-web-search-pro
 # 重启（web profile 关闭了 HMR）：
@@ -28,7 +28,7 @@ dsh --profile web
 
 > 两个插件都必须是 profile 的直接依赖：DSH 只激活直接依赖的 bundle layer，且标准 profile 可能设置 `autoInstallPeers: false`。不要只安装 Web Search Pro 后依赖 peer 自动补齐。
 > pnpm 11 若拦截 Browser 的 OpenCLI 依赖安装脚本，会要求在 profile 的 `pnpm-workspace.yaml` 中明确决定 `allowBuilds: { '@jackwener/opencli': false }`（或在确实需要安装期下载 adapter 时自行审核后设为 `true`），再重试安装；隔离 profile 中禁用脚本后，已发布 Browser 的 OpenCLI 入口仍可运行。
-> 本版仅支持 `dsh-v0.1.7-rc.2` 与 Browser `0.1.15`，不能混用仍声明旧 DSH peer 的 Browser `0.1.15-alpha.2`。若你的 harness 是本地源码 checkout，版本号可能有出入——用
+> 本版支持 `dsh-v0.1.7-rc.2` ~ `dsh-v0.2.0-rc.2` 与 Browser `0.1.17`，不能混用仍声明旧 DSH peer 的 Browser `0.1.15-alpha.2`。若你的 harness 是本地源码 checkout，版本号可能有出入——用
 > `dsh plugin --profile web add ./<path>` 并在 profile 的 `pnpm-workspace.yaml`
 > 里对齐版本后重装即可。
 
@@ -37,7 +37,7 @@ dsh --profile web
 升级 Web Search Pro 时应同时升级浏览器插件；两者都需要作为 profile 的直接依赖。
 
 ```bash
-dsh plugin --profile web add @anweat/dsh-browser@0.1.15 dsh-web-search-pro@0.1.15
+dsh plugin --profile web add @anweat/dsh-browser@0.1.17 dsh-web-search-pro@0.1.17
 ```
 
 升级完成后需要**完整停止并重新启动 Web profile**；仅刷新网页不会重新扫描插件的 `client.js`。随后依次检查：
@@ -150,6 +150,11 @@ OpenCLI 用于已有站点 adapter 或复用 Chrome 登录会话。推荐顺序�
 > `v0.6.2`。不要安装 PyPI 上同名的 `bili-cli 0.1.1`，它是另一个项目且不提供
 > `bili search` 契约。`web_deps` 会同时检查版本和 `--json` 搜索能力，避免只因
 > PATH 中存在一个同名命令就误报可用。
+
+> Windows 上这些 CLI 必须能被 `where` 解析（插件按 PATH 查找）：安装后若
+> `web_deps action=check` 仍报缺失，把可执行文件所在目录加入 PATH，或直接把
+> `bili.exe`/`yt-dlp.exe` 放进一个已在 PATH 的目录。用 `uv` 安装时可先重定向工具目录，
+> 避免默认写入系统盘：`UV_TOOL_DIR`、`UV_TOOL_BIN_DIR`、`UV_PYTHON_INSTALL_DIR`。
 
 ## 平台与引擎
 
