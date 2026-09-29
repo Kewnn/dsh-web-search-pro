@@ -31,6 +31,6 @@ test('rc.2 volatile form values are unwrapped at the runtime boundary', () => {
 
 test('an unset rc.2 volatile field falls back after unwrapping', () => {
   const resolved = resolveConfig({ dbPath: { get: () => undefined } } as never)
-  assert.match(resolved.dbPath, /web-search-pro\/store\.db$/)
+  assert.match(resolved.dbPath, /web-search-pro[\\/]store\.db$/)
   assert.equal(resolved.playwright.enabled, true)
 })
