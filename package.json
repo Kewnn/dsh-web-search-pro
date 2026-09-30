@@ -34,23 +34,24 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "node --test --experimental-transform-types test/*.test.ts",
     "test:client-bundle": "node scripts/check-client-bundle.mjs",
-    "verify": "pnpm run typecheck && pnpm run build && pnpm test && pnpm run test:client-bundle",
+    "verify": "pnpm run typecheck && pnpm run test:peers && pnpm run build && pnpm test && pnpm run test:client-bundle",
     "prepublishOnly": "pnpm run verify",
-    "prepare": "pnpm run build"
+    "prepare": "pnpm run build",
+    "test:peers": "node test/compat/check-peer-ranges.js"
   },
   "peerDependencies": {
     "@anweat/dsh-browser": "0.1.15",
     "@deepseek-ai/cordis": "4.0.4",
-    "@deepseek-ai/dsh-api-remotes": "^0.1.7-rc.2 || ^0.2.0-rc.1",
-    "@deepseek-ai/dsh-client-locale": "^0.1.7-rc.2 || ^0.2.0-rc.1",
-    "@deepseek-ai/dsh-client-store": "^0.1.7-rc.2 || ^0.2.0-rc.1",
-    "@deepseek-ai/dsh-client-ui-renderer": "^0.1.7-rc.2 || ^0.2.0-rc.1",
-    "@deepseek-ai/dsh-client-ui-settings": "^0.1.7-rc.2 || ^0.2.0-rc.1",
-    "@deepseek-ai/dsh-client-ui-plugin-manager": "^0.1.7-rc.2 || ^0.2.0-rc.1",
-    "@deepseek-ai/dsh-client-ui-slots": "^0.1.7-rc.2 || ^0.2.0-rc.1",
-    "@deepseek-ai/dsh-credentials": "^0.1.7-rc.2 || ^0.2.0-rc.1",
-    "@deepseek-ai/dsh-settings": "^0.1.7-rc.2 || ^0.2.0-rc.1",
-    "@deepseek-ai/dsh-tools": "^0.1.7-rc.2 || ^0.2.0-rc.1",
+    "@deepseek-ai/dsh-api-remotes": "^0.1.7-rc.2 || >=0.2.0-rc.1 <0.2.1-0",
+    "@deepseek-ai/dsh-client-locale": "^0.1.7-rc.2 || >=0.2.0-rc.1 <0.2.1-0",
+    "@deepseek-ai/dsh-client-store": "^0.1.7-rc.2 || >=0.2.0-rc.1 <0.2.1-0",
+    "@deepseek-ai/dsh-client-ui-renderer": "^0.1.7-rc.2 || >=0.2.0-rc.1 <0.2.1-0",
+    "@deepseek-ai/dsh-client-ui-settings": "^0.1.7-rc.2 || >=0.2.0-rc.1 <0.2.1-0",
+    "@deepseek-ai/dsh-client-ui-plugin-manager": "^0.1.7-rc.2 || >=0.2.0-rc.1 <0.2.1-0",
+    "@deepseek-ai/dsh-client-ui-slots": "^0.1.7-rc.2 || >=0.2.0-rc.1 <0.2.1-0",
+    "@deepseek-ai/dsh-credentials": "^0.1.7-rc.2 || >=0.2.0-rc.1 <0.2.1-0",
+    "@deepseek-ai/dsh-settings": "^0.1.7-rc.2 || >=0.2.0-rc.1 <0.2.1-0",
+    "@deepseek-ai/dsh-tools": "^0.1.7-rc.2 || >=0.2.0-rc.1 <0.2.1-0",
     "@deepseek-ai/schemastery": "^3.18.2"
   },
   "peerDependenciesMeta": {
@@ -72,7 +73,9 @@
     "@deepseek-ai/dsh-client-ui-settings": {
       "optional": true
     },
-    "@deepseek-ai/dsh-client-ui-plugin-manager": { "optional": true },
+    "@deepseek-ai/dsh-client-ui-plugin-manager": {
+      "optional": true
+    },
     "@deepseek-ai/dsh-client-ui-slots": {
       "optional": true
     },
