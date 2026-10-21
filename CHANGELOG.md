@@ -1,5 +1,14 @@
 # 更新记录
 
+## 0.2.2（未发布）
+
+兼容性修复：让插件在 **npm** 解析下也能装进 `dsh 0.2.1-rc.2`，并放宽 `cordis` 上界。无功能变更。
+
+- `@deepseek-ai/dsh-*` peer 由 `>=0.2.0-rc.2 <0.2.2-0` 改为两支 `>=0.2.0-rc.2 <0.2.1-0 || >=0.2.1-rc.2 <0.2.2-0`：宿主组装期的两种解析都放行 `0.2.1-rc.2`，npm 默认 semver 也能命中 `0.2.1` 同号预发布比较符（单支 `>=0.2.0-rc.2 <0.2.2-0` 只过宿主校验、`npm install` 会报 ERESOLVE）。
+- `@deepseek-ai/cordis` peer 由 `4.0.4` 改为 `>=4.0.4 <5`：`dsh 0.2.1-rc.2` 自带 `cordis 4.0.5`，精确锁 `4.0.4` 会让 `npm install` 报 ERESOLVE；4.0.4/4.0.5 同属 4.x，cordis 是库版本、不跟 dsh 线锁步。
+- `test/compat/check-peer-ranges.js`：受支持基线加上 `0.2.1-rc.2`；拒绝清单加入 `0.2.1-rc.1`（未验证）与 `0.2.2-rc.1`（上界外）；selftest 增加两支范围的用例。
+- 验证：`pnpm run test:peers` 在 `0.2.0-rc.2`、`0.2.1-rc.2` 上通过且拒绝清单被拒；`typecheck`、`build`、单测、`test:client-bundle` 全过。
+
 ## 0.2.1（2026-10-07）
 
 独立 CLI 适配层。兼容范围与 0.2.0 相同（DSH `>=0.2.0-rc.2 <0.2.1-0`，可选 `@anweat/dsh-browser ^0.2.0`），没有破坏性变更。
